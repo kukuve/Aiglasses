@@ -1,0 +1,67 @@
+<view class="page">
+  <view class="header">
+    <view>
+      <view class="title">用户数据看板</view>
+      <view class="sub">可视化查看用户表与活跃数据</view>
+    </view>
+    <view class="header-actions">
+      <button size="mini" bindtap="refresh">刷新</button>
+      <button size="mini" type="primary" bindtap="goSuperAdmin">超级管理</button>
+    </view>
+  </view>
+
+  <view class="stats">
+    <view class="stat-card">
+      <text class="label">用户总数</text>
+      <text class="value">{{stats.total}}</text>
+    </view>
+    <view class="stat-card">
+      <text class="label">活跃用户</text>
+      <text class="value success">{{stats.active}}</text>
+    </view>
+    <view class="stat-card">
+      <text class="label">今日登录</text>
+      <text class="value info">{{stats.todayLogin}}</text>
+    </view>
+    <view class="stat-card">
+      <text class="label">7日登录</text>
+      <text class="value info">{{stats.weekLogin}}</text>
+    </view>
+  </view>
+
+  <view class="list-header">
+    <view class="list-title">用户表</view>
+    <picker mode="selector" range="{{statusOptions}}" value="{{statusIndex}}" bindchange="onStatusChange">
+      <view class="filter">筛选：{{statusOptions[statusIndex]}}</view>
+    </picker>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty">加载中...</view>
+  <view wx:if="{{!loading && !records.length}}" class="empty">暂无数据</view>
+
+  <scroll-view scroll-y="true" class="list">
+    <view wx:for="{{records}}" wx:key="id" class="card">
+      <view class="card-top">
+        <view>
+          <view class="word">{{item.account || item.phone || '未知账号'}}</view>
+          <view class="phonetic">{{item.phone || '-'}}</view>
+        </view>
+        <view class="status">{{item.status || 'active'}} · 登录 {{item.loginCount || 0}} 次</view>
+      </view>
+      <view class="meta">用户ID：{{item.userId}}</view>
+      <view class="meta">创建时间：{{item.createdAtText}}</view>
+      <view class="meta">最近登录：{{item.lastLoginAtText}}</view>
+      <view class="meta">OPENID：{{item.openid || '--'}}</view>
+      <view class="card-actions">
+        <button
+          size="mini"
+          type="primary"
+          data-userid="{{item.userId}}"
+          bindtap="goSuperAdminByUser"
+        >
+          敏感查询
+        </button>
+      </view>
+    </view>
+  </scroll-view>
+</view>

@@ -1,0 +1,32 @@
+---
+description: 
+alwaysApply: true
+enabled: true
+updatedAt: 2026-04-21T19:02:33.762Z
+provider: 
+---
+
+# 智能眼镜 MVP 全局项目规则 (Cloudbase Serverless 架构)
+
+## 1. 架构定位与核心底座
+- 后端服务：全面使用 Cloudbase (腾讯云开发/微信云开发) 作为后端底座。
+- 架构模式：Serverless (无服务器架构)，不使用 Express 等传统 Web 框架。
+- 硬件端 (ESP32)：通过 Cloudbase 提供的 HTTP API (云函数 URL) 发送数据。
+- 客户端 (小程序/Web)：使用 Cloudbase Client SDK 直接调用云环境资源。
+
+## 2. 核心模块与资源使用规范
+- 云函数 (Cloud Functions)：用于处理敏感逻辑。所有调用 Google Gemini Vision API 的操作、Prompt 组装、数据格式化，必须在云函数中执行，严禁在前端调用 AI API。
+- 云存储 (Cloud Storage)：取代传统的本地服务器文件夹。ESP32 拍摄的图片流必须直接上传至云存储，云函数通过 `fileID` 或临时链接读取图片进行 AI 分析。
+- 云数据库 (Cloud Database)：使用 Cloudbase 自带的 NoSQL 数据库存储用户的“单词本”和“学习记录”。
+
+## 3. 目录结构规范
+严禁生成传统的 MVC 目录结构，必须遵循以下云开发标准的目录：
+- `/cloudfunctions`: 存放所有的云函数代码。每个业务动作对应一个独立的文件夹（例如 `/cloudfunctions/analyzeImage`, `/cloudfunctions/getUserVocab`）。
+- `/miniprogram` 或 `/client`: 存放前端/客户端交互代码。
+
+## 4. 编码与安全标准
+- 环境变量：Gemini API Key 和 ESP32 的鉴权 Token 必须配置在云函数的**环境变量**中，绝对不可硬编码在 `index.js` 中。
+- 接口响应格式：所有云函数的 `return` 必须遵循统一的 JSON 结构：
+  - 成功：`{ "code": 0, "data": { "word": "...", "sentence": "..." }, "msg": "success" }`
+  - 失败：`{ "code": -1, "msg": "具体的错误英文描述" }`
+- 异常处理：云函数中所有的异步操作 (如请求大模型 API) 必须使用 `try...catch` 包裹，并在 catch 中打出 console.error 日志以便在云控制台排查。

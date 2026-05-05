@@ -1,0 +1,147 @@
+.page {
+  padding: 24rpx;
+  background: #f6f7fb;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10rpx;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #111827;
+}
+
+.sub {
+  font-size: 26rpx;
+  color: #6b7280;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200rpx, 1fr));
+  gap: 16rpx;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.06);
+}
+
+.label {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.value {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #111827;
+}
+
+.value.success { color: #10b981; }
+.value.info { color: #3b82f6; }
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 28rpx 0 12rpx;
+}
+
+.list-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.filter {
+  font-size: 26rpx;
+  color: #2563eb;
+}
+
+.list {
+  max-height: 900rpx;
+}
+
+.card {
+  background: #fff;
+  border-radius: 14rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 6rpx 16rpx rgba(0,0,0,0.05);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.word {
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.phonetic {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.status {
+  font-size: 24rpx;
+  color: #2563eb;
+  background: #e0ecff;
+  padding: 6rpx 12rpx;
+  border-radius: 999rpx;
+}
+
+.sentence {
+  font-size: 26rpx;
+  color: #111827;
+  margin: 6rpx 0;
+}
+
+.meaning {
+  font-size: 24rpx;
+  color: #6b7280;
+  margin-bottom: 10rpx;
+}
+
+.meta {
+  font-size: 22rpx;
+  color: #9ca3af;
+  margin-bottom: 12rpx;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.actions {
+  display: flex;
+  gap: 12rpx;
+}
+
+.empty {
+  text-align: center;
+  color: #9ca3af;
+  padding: 40rpx 0;
+}

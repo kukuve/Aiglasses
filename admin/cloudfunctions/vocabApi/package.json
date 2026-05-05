@@ -1,0 +1,9 @@
+{
+  "name": "vocabApi",
+  "version": "1.0.0",
+  "description": "Vocabulary management API for AIGlass",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

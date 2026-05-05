@@ -1,0 +1,10 @@
+{
+  "name": "saveApiConfig",
+  "version": "1.0.0",
+  "description": "Save and retrieve user AI API configurations",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.4.0",
+    "node-fetch": "2"
+  }
+}

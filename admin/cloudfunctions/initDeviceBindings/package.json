@@ -1,0 +1,9 @@
+{
+  "name": "initDeviceBindings",
+  "version": "1.0.0",
+  "description": "Initialize device_bindings collection and indexes",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.4.0"
+  }
+}

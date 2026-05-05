@@ -1,0 +1,146 @@
+<view class="page-container">
+  <view class="header-bar">
+    <view class="back-btn" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="header-title">注册账号</text>
+    <view class="placeholder"></view>
+  </view>
+
+  <view class="form-container">
+    <view class="welcome-section">
+      <text class="welcome-title">创建新账号</text>
+      <text class="welcome-desc">填写以下信息完成注册</text>
+    </view>
+
+    <view class="form-group {{phoneFocus ? 'form-group-focused' : ''}} {{phoneError ? 'form-group-error' : ''}}">
+      <view class="input-label">手机号</view>
+      <view class="input-wrapper">
+        <text class="input-prefix-icon">📱</text>
+        <input
+          class="form-input"
+          type="text"
+          placeholder="请输入手机号（支持+国家码）"
+          placeholder-class="input-placeholder"
+          value="{{phone}}"
+          bindinput="onPhoneInput"
+          bindfocus="onPhoneFocus"
+          bindblur="onPhoneBlur"
+          maxlength="24"
+          data-field="phone"
+        />
+        <view class="input-clear {{phone ? 'visible' : ''}}" bindtap="clearPhone">
+          <text class="clear-icon">✕</text>
+        </view>
+      </view>
+      <view class="error-tip {{phoneError ? 'visible' : ''}}">{{phoneErrorMessage}}</view>
+    </view>
+
+    <view class="form-group {{codeFocus ? 'form-group-focused' : ''}} {{codeError ? 'form-group-error' : ''}}">
+      <view class="input-label">验证码</view>
+      <view class="input-wrapper code-wrapper">
+        <text class="input-prefix-icon">🔢</text>
+        <input
+          class="form-input"
+          type="text"
+          placeholder="请输入6位验证码"
+          placeholder-class="input-placeholder"
+          value="{{code}}"
+          bindinput="onCodeInput"
+          bindfocus="onCodeFocus"
+          bindblur="onCodeBlur"
+          maxlength="6"
+          data-field="code"
+        />
+        <button
+          class="code-btn {{(codeBtnDisabled || codeSending) ? 'disabled' : ''}}"
+          disabled="{{codeBtnDisabled || codeSending}}"
+          bindtap="getVerifyCode"
+        >
+          <text wx:if="{{!codeSending}}">{{codeBtnText}}</text>
+          <text wx:elif="{{codeSending}}">发送中...</text>
+        </button>
+      </view>
+      <view class="error-tip {{codeError ? 'visible' : ''}}">{{codeErrorMessage}}</view>
+    </view>
+
+    <view class="form-group {{passwordFocus ? 'form-group-focused' : ''}} {{passwordError ? 'form-group-error' : ''}}">
+      <view class="input-label">设置密码</view>
+      <view class="input-wrapper">
+        <text class="input-prefix-icon">🔒</text>
+        <input
+          class="form-input"
+          type="{{showPassword ? 'text' : 'password'}}"
+          placeholder="6-20位密码"
+          placeholder-class="input-placeholder"
+          value="{{password}}"
+          bindinput="onPasswordInput"
+          bindfocus="onPasswordFocus"
+          bindblur="onPasswordBlur"
+          maxlength="20"
+          data-field="password"
+        />
+        <view class="input-toggle" bindtap="togglePassword">
+          <text class="toggle-icon">{{showPassword ? '👁' : '🙈'}}</text>
+        </view>
+      </view>
+      <view class="password-strength {{password ? 'visible' : ''}}">
+        <view class="strength-bar">
+          <view class="strength-fill {{strengthClass}}" style="width: {{strengthPercent}}%"></view>
+        </view>
+        <text class="strength-text {{strengthClass}}">{{strengthText}}</text>
+      </view>
+      <view class="error-tip {{passwordError ? 'visible' : ''}}">{{passwordErrorMessage}}</view>
+    </view>
+
+    <view class="form-group {{confirmFocus ? 'form-group-focused' : ''}} {{confirmError ? 'form-group-error' : ''}}">
+      <view class="input-label">确认密码</view>
+      <view class="input-wrapper">
+        <text class="input-prefix-icon">🔒</text>
+        <input
+          class="form-input"
+          type="{{showConfirmPassword ? 'text' : 'password'}}"
+          placeholder="请再次输入密码"
+          placeholder-class="input-placeholder"
+          value="{{confirmPassword}}"
+          bindinput="onConfirmInput"
+          bindfocus="onConfirmFocus"
+          bindblur="onConfirmBlur"
+          maxlength="20"
+          data-field="confirmPassword"
+        />
+        <view class="input-toggle" bindtap="toggleConfirmPassword">
+          <text class="toggle-icon">{{showConfirmPassword ? '👁' : '🙈'}}</text>
+        </view>
+      </view>
+      <view class="error-tip {{confirmError ? 'visible' : ''}}">{{confirmErrorMessage}}</view>
+    </view>
+
+    <view class="agreement">
+      <view class="agreement-checkbox {{agreed ? 'checked' : ''}}" bindtap="toggleAgreement">
+        <text class="check-icon" wx:if="{{agreed}}">✓</text>
+      </view>
+      <view class="agreement-text">
+        <text>我已阅读并同意</text>
+        <text class="link">《用户协议》</text>
+        <text>和</text>
+        <text class="link">《隐私政策》</text>
+      </view>
+    </view>
+
+    <button class="register-btn {{isLoading ? 'loading' : ''}}" bindtap="handleRegister" disabled="{{isLoading || !agreed}}">
+      <view class="loading-spinner" wx:if="{{isLoading}}">
+        <view class="spinner-item"></view>
+        <view class="spinner-item"></view>
+        <view class="spinner-item"></view>
+      </view>
+      <text wx:if="{{!isLoading}}">注册</text>
+      <text wx:elif="{{isLoading}}">注册中...</text>
+    </button>
+
+    <view class="login-link">
+      <text class="link-text">已有账号？</text>
+      <text class="link-action" bindtap="goToLogin">立即登录</text>
+    </view>
+  </view>
+</view>

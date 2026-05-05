@@ -1,0 +1,77 @@
+<view class="page-container">
+  <view class="hero">
+    <view>
+      <text class="title">单词学习</text>
+      <text class="subtitle">欢迎回来，{{userInfo.phone || userInfo.account || '同学'}}</text>
+      <view class="device-card" wx:if="{{boundDevice}}">
+        <text class="device-id-text">{{boundDevice.deviceId}}</text>
+        <text class="device-status">智能眼镜 · 已绑定</text>
+      </view>
+      <view class="device-card unbound" wx:else>
+        <text class="device-id-text">--</text>
+        <text class="device-status">未绑定设备</text>
+      </view>
+    </view>
+    <view class="hero-actions">
+      <button size="mini" class="ai-btn" bindtap="goAiResult">AI配置</button>
+      <button size="mini" class="bind-btn" bindtap="goDeviceBind">绑定设备</button>
+      <button size="mini" class="logout-btn" bindtap="logout">退出</button>
+    </view>
+  </view>
+
+  <view class="stats-section">
+    <view class="stat-card">
+      <text class="stat-label">词汇总数</text>
+      <text class="stat-value">{{stats.total}}</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-label">已掌握</text>
+      <text class="stat-value success">{{stats.mastered}}</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-label">今日新增</text>
+      <text class="stat-value info">{{stats.today}}</text>
+    </view>
+  </view>
+
+  <view class="list-section">
+    <view class="list-header">
+      <text class="list-title">最近单词</text>
+      <text class="list-hint">下拉刷新，向上加载更多</text>
+    </view>
+
+    <view wx:if="{{error}}" class="empty error-box">
+      <text>{{error}}</text>
+      <button size="mini" bindtap="retry">重试</button>
+    </view>
+
+    <view wx:if="{{loading && !vocabList.length}}" class="skeleton-list">
+      <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+        <view class="skeleton-line wide"></view>
+        <view class="skeleton-line mid"></view>
+        <view class="skeleton-line narrow"></view>
+      </view>
+    </view>
+
+    <view wx:if="{{!loading && !vocabList.length && !error}}" class="empty">还没有可学习的单词，等待 AI 识别同步</view>
+
+    <view wx:for="{{vocabList}}" wx:key="id" class="card">
+      <view class="card-header">
+        <view>
+          <text class="word">{{item.word}}</text>
+          <text class="phonetic">/{{item.phonetic}}/</text>
+        </view>
+        <view class="status">{{item.status || 'new'}}</view>
+      </view>
+      <view class="sentence">{{item.sentence}}</view>
+      <view class="meaning">{{item.meaning}}</view>
+      <view class="card-footer">
+        <text class="meta">复习次数 {{item.review_count || 0}}</text>
+        <button size="mini" class="mini-btn" bindtap="markMastered" data-id="{{item.id}}">标记掌握</button>
+      </view>
+    </view>
+
+    <view wx:if="{{loadingMore}}" class="empty">加载更多...</view>
+    <view wx:if="{{!hasMore && vocabList.length}}" class="empty">已经到底啦</view>
+  </view>
+</view>

@@ -1,0 +1,10 @@
+{
+  "name": "uploadImage",
+  "version": "1.0.0",
+  "description": "HTTP upload endpoint with X-Device-ID verification",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.4.0",
+    "node-fetch": "2"
+  }
+}

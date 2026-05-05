@@ -1,0 +1,254 @@
+<view class="page-container">
+  <!-- Header -->
+  <view class="hero">
+    <view>
+      <text class="title">AI 识别结果</text>
+      <text class="subtitle">实时接收设备拍摄的识别结果</text>
+    </view>
+    <view class="hero-actions">
+      <button size="mini" class="api-btn" bindtap="toggleApiPicker">
+        {{selectedApi === 'custom' ? (providerConfigs.custom.model_name || '自定义') : selectedApi === 'deepseek' ? 'DeepSeek' : selectedApi === 'gpt4v' ? 'GPT-4V' : selectedApi === 'gemini' ? 'Gemini' : selectedApi === 'qwen' ? '千问VL' : selectedApi}} ▾
+      </button>
+    </view>
+  </view>
+
+  <!-- API Selection & Config Panel -->
+  <view wx:if="{{showApiPicker}}" class="api-picker">
+    <view class="api-picker-title">选择 AI 模型</view>
+    <view
+      wx:for="{{apiOptions}}"
+      wx:key="id"
+      class="api-option {{item.id === selectedApi ? 'selected' : ''}} {{!item.supported ? 'disabled' : ''}}"
+      bindtap="selectApi"
+      data-id="{{item.id}}"
+    >
+      <view class="api-option-header">
+        <text class="api-name">{{item.name}}</text>
+        <text wx:if="{{item.id === selectedApi}}" class="api-check">✓</text>
+        <text wx:if="{{!item.supported}}" class="api-badge">暂不可用</text>
+        <text wx:if="{{providerConfigs[item.id].configured}}" class="api-badge-ok">已配置</text>
+      </view>
+      <text class="api-desc">{{item.desc}}</text>
+
+      <!-- API Key status & actions -->
+      <view class="api-key-row" catchtap="">
+        <view wx:if="{{providerConfigs[item.id].configured}}" class="api-key-info">
+          <view class="api-key-details">
+            <text class="api-key-masked">Key: {{providerConfigs[item.id].masked_key}}</text>
+            <text wx:if="{{item.id === 'custom' && providerConfigs[item.id].endpoint}}" class="api-key-masked">端点: {{providerConfigs[item.id].endpoint}}</text>
+            <text class="api-key-model">模型: {{providerConfigs[item.id].model_id || '默认'}}</text>
+          </view>
+          <text class="api-key-delete" catchtap="deleteApiKey" data-id="{{item.id}}">删除</text>
+        </view>
+        <button
+          size="mini"
+          class="api-key-btn"
+          catchtap="openApiConfig"
+          data-id="{{item.id}}"
+        >
+          {{providerConfigs[item.id].configured ? '更换配置' : '配置 API'}}
+        </button>
+      </view>
+    </view>
+
+    <view class="api-picker-hint">选择模型后，请先配置对应的 API Key</view>
+  </view>
+
+  <!-- API Key Configuration Modal -->
+  <view wx:if="{{showApiConfig}}" class="config-mask" catchtap="onConfigMaskTap">
+    <view class="config-card" catchtap="noop">
+      <view class="config-header">
+        <text class="config-title">配置 API</text>
+        <text class="config-close" catchtap="closeApiConfig">✕</text>
+      </view>
+
+      <view class="config-body">
+        <view class="config-provider-name">
+          {{configProvider === 'custom' ? '自定义模型' : configProvider === 'deepseek' ? 'DeepSeek' : configProvider === 'gpt4v' ? 'GPT-4 Vision' : configProvider === 'gemini' ? 'Gemini Pro' : configProvider === 'qwen' ? '通义千问VL' : configProvider}}
+        </view>
+        
+        <!-- Custom: Model Name & Endpoint fields -->
+        <block wx:if="{{configProvider === 'custom'}}">
+          <view class="config-field">
+            <text class="config-label">模型名称</text>
+            <input
+              class="config-input"
+              type="text"
+              placeholder="例如: My-GPT-4o"
+              value="{{configModelName}}"
+              bindinput="onModelNameInput"
+              maxlength="64"
+              adjust-position="{{true}}"
+            />
+            <text class="config-field-hint">自定义模型在界面上的显示名称，便于识别</text>
+          </view>
+        
+          <view class="config-field">
+            <text class="config-label">API 端点地址</text>
+            <input
+              class="config-input"
+              type="text"
+              placeholder="https://api.example.com/v1/chat/completions"
+              value="{{configEndpoint}}"
+              bindinput="onEndpointInput"
+              maxlength="256"
+              adjust-position="{{true}}"
+            />
+            <text class="config-field-hint">OpenAI 兼容格式的 API 端点 URL</text>
+          </view>
+        </block>
+
+        <view class="config-field">
+          <text class="config-label">API Key</text>
+          <input
+            class="config-input"
+            type="text"
+            password="{{true}}"
+            placeholder="{{configProvider === 'custom' ? '输入 API Key' : configProvider === 'gemini' ? 'AIza...' : 'sk-...'}}"
+            value="{{configApiKey}}"
+            bindinput="onApiKeyInput"
+            focus="{{showApiConfig}}"
+            maxlength="256"
+            adjust-position="{{true}}"
+          />
+        </view>
+
+        <view class="config-field">
+          <text class="config-label">模型 ID</text>
+          <input
+            class="config-input"
+            type="text"
+            placeholder="{{configModelPlaceholder}}"
+            value="{{configModelId}}"
+            bindinput="onModelIdInput"
+            maxlength="128"
+            adjust-position="{{true}}"
+          />
+          <text class="config-field-hint">留空则使用默认模型: {{configModelPlaceholder}}</text>
+        </view>
+
+        <view wx:if="{{configProvider !== 'custom'}}" class="config-tips">
+          <text class="config-tip" wx:if="{{configProvider === 'deepseek'}}">前往 platform.deepseek.com 获取 API Key</text>
+          <text class="config-tip" wx:if="{{configProvider === 'gpt4v'}}">前往 platform.openai.com 获取 API Key</text>
+          <text class="config-tip" wx:if="{{configProvider === 'gemini'}}">前往 aistudio.google.com 获取 API Key</text>
+          <text class="config-tip" wx:if="{{configProvider === 'qwen'}}">前往 dashscope.console.aliyun.com 获取 API Key</text>
+          <text class="config-tip-warn">API Key 将加密存储在云端，仅用于图像识别调用</text>
+        </view>
+      </view>
+
+      <view class="config-footer">
+        <button
+          size="mini"
+          class="config-btn-test"
+          catchtap="testApiKey"
+          disabled="{{configTesting || !configApiKey}}"
+          loading="{{configTesting}}"
+        >
+          验证
+        </button>
+        <button
+          size="mini"
+          class="config-btn-save"
+          catchtap="saveApiKey"
+          disabled="{{configSaving || !configApiKey}}"
+          loading="{{configSaving}}"
+        >
+          保存
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- Loading skeleton -->
+  <view wx:if="{{loading}}" class="skeleton-list">
+    <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+      <view class="skeleton-line wide"></view>
+      <view class="skeleton-line mid"></view>
+      <view class="skeleton-line narrow"></view>
+    </view>
+  </view>
+
+  <!-- Empty state -->
+  <view wx:if="{{!loading && !results.length}}" class="empty-state">
+    <text class="empty-icon">📷</text>
+    <text class="empty-text">暂无识别结果</text>
+    <text class="empty-hint">等待 ESP32 设备拍摄并上传图片...</text>
+  </view>
+
+  <!-- Results list -->
+  <view wx:if="{{!loading && results.length}}" class="results-section">
+    <view class="section-header">
+      <text class="section-title">识别记录</text>
+      <text class="section-count">共 {{results.length}} 条</text>
+    </view>
+
+    <view wx:for="{{results}}" wx:key="_id" class="result-card">
+      <!-- Image preview -->
+      <view wx:if="{{item.image_url}}" class="card-image" bindtap="previewImage" data-url="{{item.image_url}}">
+        <image src="{{item.image_url}}" mode="aspectFill" class="thumb" lazy-load="true" />
+      </view>
+
+      <!-- AI result content -->
+      <view class="card-body">
+        <view class="card-row">
+          <text class="label">场景</text>
+          <text class="value">{{item.scene || '-'}}</text>
+        </view>
+        <view class="card-row">
+          <text class="label">识别物体</text>
+          <text class="value">{{item.objects || '-'}}</text>
+        </view>
+        <view class="card-row description-row">
+          <text class="label">描述</text>
+          <text class="value desc-text">{{item.description}}</text>
+        </view>
+        <view wx:if="{{item.tags.length}}" class="tags-row">
+          <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
+        </view>
+        <view class="card-meta">
+          <text class="meta-item">{{item.ai_model}}</text>
+          <text class="meta-item confidence-{{item.confidence}}">{{item.confidence}}</text>
+          <text wx:if="{{item.words_count > 0}}" class="meta-item vocab">📖 {{item.words_count}} 词</text>
+          <text class="meta-item time">{{item.time}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- New result popup -->
+  <view wx:if="{{showPopup && latestResult}}" class="popup-mask" catchtap="closePopup">
+    <view class="popup-card" catchtap="noop">
+      <view class="popup-header">
+        <text class="popup-title">新识别结果</text>
+        <text class="popup-close" bindtap="closePopup">✕</text>
+      </view>
+
+      <view wx:if="{{latestResult.image_url}}" class="popup-image">
+        <image src="{{latestResult.image_url}}" mode="aspectFit" class="popup-thumb" />
+      </view>
+
+      <view class="popup-body">
+        <view class="popup-row">
+          <text class="popup-label">场景：</text>
+          <text>{{latestResult.scene || '-'}}</text>
+        </view>
+        <view class="popup-row">
+          <text class="popup-label">物体：</text>
+          <text>{{latestResult.objects || '-'}}</text>
+        </view>
+        <view class="popup-desc">{{latestResult.description}}</view>
+        <view wx:if="{{latestResult.tags.length}}" class="popup-tags">
+          <text wx:for="{{latestResult.tags}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
+        </view>
+      </view>
+
+      <view class="popup-footer">
+        <view>
+          <text class="popup-model">模型: {{latestResult.ai_model}}</text>
+          <text wx:if="{{latestResult.words_count > 0}}" class="popup-model" style="margin-left:12px;">📖 {{latestResult.words_count}} 个单词已提取</text>
+        </view>
+        <button size="mini" class="popup-btn" bindtap="closePopup">知道了</button>
+      </view>
+    </view>
+  </view>
+</view>

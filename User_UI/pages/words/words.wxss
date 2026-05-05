@@ -1,0 +1,230 @@
+.page-container {
+  min-height: 100vh;
+  padding: 40rpx 28rpx 80rpx;
+  background: linear-gradient(180deg, var(--primary-color) 0%, var(--primary-dark) 220rpx, var(--bg-color) 220rpx);
+  box-sizing: border-box;
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--white);
+  margin-bottom: 28rpx;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 10rpx;
+}
+
+.bind-btn {
+  background: rgba(7, 193, 96, 0.22);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.28);
+}
+
+.ai-btn {
+  background: rgba(59, 130, 246, 0.3);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.28);
+}
+
+.title {
+  display: block;
+  font-size: 44rpx;
+  font-weight: 700;
+}
+
+.subtitle {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.85);
+}
+
+.device-card {
+  margin-top: 20rpx;
+  padding: 16rpx 20rpx;
+  background: rgba(255,255,255,0.15);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.device-card.unbound {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.1);
+}
+
+.device-id-text {
+  display: block;
+  font-size: 24rpx;
+  font-weight: 600;
+  color: rgba(255,255,255,0.95);
+  font-family: 'SF Mono', 'Menlo', 'Courier New', monospace;
+  letter-spacing: 2rpx;
+}
+
+.device-card.unbound .device-id-text {
+  color: rgba(255,255,255,0.5);
+}
+
+.device-status {
+  display: block;
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.7);
+}
+
+.device-card.unbound .device-status {
+  color: rgba(255,255,255,0.4);
+}
+
+.logout-btn {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.28);
+}
+
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16rpx;
+  margin-bottom: 28rpx;
+}
+
+.stat-card,
+.card,
+.skeleton-card,
+.error-box {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-card {
+  padding: var(--spacing-lg);
+}
+
+.stat-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.stat-value {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 44rpx;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.stat-value.success { color: var(--success-color); }
+.stat-value.info { color: #3b82f6; }
+
+.list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.list-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.list-hint {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.card {
+  padding: 24rpx;
+}
+
+.card-header,
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.word {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-right: 10rpx;
+}
+
+.phonetic,
+.meta,
+.meaning {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.status {
+  font-size: var(--font-size-xs);
+  color: var(--primary-color);
+  background: var(--primary-light);
+  padding: 8rpx 14rpx;
+  border-radius: 999rpx;
+}
+
+.sentence {
+  margin: 14rpx 0 10rpx;
+  font-size: var(--font-size-md);
+  color: var(--text-color);
+  line-height: 1.7;
+}
+
+.mini-btn {
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border: none;
+}
+
+.empty {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 28rpx 0;
+}
+
+.error-box {
+  padding: 24rpx;
+}
+
+.skeleton-list {
+  display: grid;
+  gap: 16rpx;
+}
+
+.skeleton-card {
+  padding: 24rpx;
+}
+
+.skeleton-line {
+  height: 24rpx;
+  background: linear-gradient(90deg, #f0f2f5 25%, #e6e9ed 37%, #f0f2f5 63%);
+  background-size: 400% 100%;
+  border-radius: 999rpx;
+  animation: shimmer 1.4s ease infinite;
+  margin-bottom: 12rpx;
+}
+
+.skeleton-line:last-child { margin-bottom: 0; }
+.skeleton-line.wide { width: 80%; }
+.skeleton-line.mid { width: 60%; }
+.skeleton-line.narrow { width: 40%; }
+
+@keyframes shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}

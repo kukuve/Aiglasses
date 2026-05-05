@@ -1,0 +1,62 @@
+.page {
+  min-height: 100vh;
+  padding: 32rpx;
+  box-sizing: border-box;
+  background: #f5f7fb;
+}
+
+.card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 28rpx;
+  box-shadow: 0 6rpx 18rpx rgba(0, 0, 0, 0.06);
+}
+
+.title {
+  display: block;
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.desc {
+  display: block;
+  margin-top: 10rpx;
+  margin-bottom: 24rpx;
+  color: #6b7280;
+  font-size: 26rpx;
+}
+
+.field {
+  margin-top: 20rpx;
+}
+
+.label {
+  display: block;
+  color: #374151;
+  font-size: 26rpx;
+  margin-bottom: 10rpx;
+}
+
+.input {
+  height: 88rpx;
+  border-radius: 12rpx;
+  border: 1px solid #d1d5db;
+  padding: 0 20rpx;
+  font-size: 30rpx;
+}
+
+.btn {
+  margin-top: 20rpx;
+  border-radius: 999rpx;
+}
+
+.primary {
+  background: #07c160;
+  color: #fff;
+}
+
+.ghost {
+  background: #eef2ff;
+  color: #2563eb;
+}

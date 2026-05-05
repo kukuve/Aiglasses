@@ -1,0 +1,12 @@
+{
+  "name": "userAuth",
+  "version": "1.0.0",
+  "description": "AIGlass user auth cloud function",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests/phone-binding.test.js && node tests/auto-bind.logic.test.js && node tests/login-bind-flow.integration.test.js"
+  },
+  "dependencies": {
+    "wx-server-sdk": "~2.4.0"
+  }
+}

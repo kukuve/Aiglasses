@@ -1,0 +1,43 @@
+<view class="page-container">
+  <view class="hero-panel">
+    <view class="logo-area">
+      <view class="logo-icon">
+        <text class="logo-text">U</text>
+      </view>
+      <text class="app-name">用户中心</text>
+      <text class="app-desc">安全 · 便捷 · 高效的单词学习入口</text>
+    </view>
+  </view>
+
+  <view class="feature-panel">
+    <view class="feature-card">
+      <text class="feature-title">AI 单词学习</text>
+      <text class="feature-desc">登录后自动同步图片识别出的单词、例句和释义，并直接进入学习页面。</text>
+    </view>
+
+    <view class="action-section">
+      <button class="btn btn-primary" bindtap="goToLogin">
+        <text class="btn-icon">🔑</text>
+        <text>登录账号</text>
+      </button>
+      <button class="btn btn-outline" bindtap="goToRegister">
+        <text class="btn-icon">📝</text>
+        <text>注册新账号</text>
+      </button>
+    </view>
+
+    <view class="tips">
+      <text class="tips-title">使用说明</text>
+      <text class="tips-item">1. 使用手机号注册并获取测试验证码</text>
+      <text class="tips-item">2. 登录成功后直接跳转到单词页面</text>
+      <text class="tips-item">3. 若词汇数据为空，请先部署 `vocabApi` 云函数</text>
+    </view>
+  </view>
+
+  <view class="footer-section">
+    <text class="footer-text">继续操作即表示同意</text>
+    <text class="footer-link">《用户协议》</text>
+    <text class="footer-text">和</text>
+    <text class="footer-link">《隐私政策》</text>
+  </view>
+</view>

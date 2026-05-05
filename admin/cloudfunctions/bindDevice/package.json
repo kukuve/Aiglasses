@@ -1,0 +1,9 @@
+{
+  "name": "bindDevice",
+  "version": "1.0.0",
+  "description": "Bind smart glasses device id with user phone",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.4.0"
+  }
+}
