@@ -4,7 +4,7 @@ App({
   globalData: {
     userInfo: null,
     isLoggedIn: false,
-    env: 'cloud1-d9gof7sc438491e13',
+    env: 'your-cloud-environment-id', // ⚠️ Replace with your CloudBase environment ID
     sessionToken: '',
     sessionExpiresAt: 0
   },

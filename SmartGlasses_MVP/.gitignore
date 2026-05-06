@@ -3,3 +3,8 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+
+# Sensitive config (contains WiFi credentials, upload URLs, ports)
+platformio.ini
+sdkconfig.esp32cam
+src/main.c

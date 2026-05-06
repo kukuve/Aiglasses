@@ -11,10 +11,25 @@ const BINDING_AUDIT_LOGS = 'binding_audit_logs'
 const SESSION_TTL = 7 * 24 * 60 * 60 * 1000
 const CODE_TTL = 5 * 60 * 1000
 const RESEND_INTERVAL = 60 * 1000
-const HASH_SECRET = process.env.AUTH_HASH_SECRET || 'AIGlass_Auth_Secret'
+/* ── Environment variables ───────────────────────────────────
+ * ⚠️  NONE of these have fallback defaults in production.
+ *     Every security-critical variable MUST be set in the
+ *     WeChat CloudBase Console → Cloud Functions → userAuth →
+ *     Environment Variables, otherwise the function will
+ *     refuse to start (throw a clear error).
+ */
+function requireEnv(name) {
+  const value = process.env[name]
+  if (!value) {
+    throw new Error(`FATAL: Environment variable "${name}" is not set. Configure it in CloudBase Console → Cloud Functions → userAuth → Environment Variables.`)
+  }
+  return value
+}
+
+const HASH_SECRET = requireEnv('AUTH_HASH_SECRET')
+const PASSWORD_ENCRYPT_SECRET = requireEnv('PASSWORD_ENCRYPT_SECRET')
+const SUPER_ADMIN_KEY = requireEnv('SUPER_ADMIN_KEY')
 const EXPOSE_VERIFY_CODE = process.env.EXPOSE_VERIFY_CODE !== 'false'
-const PASSWORD_ENCRYPT_SECRET = process.env.PASSWORD_ENCRYPT_SECRET || `${HASH_SECRET}_Password_Encrypt`
-const SUPER_ADMIN_KEY = process.env.SUPER_ADMIN_KEY || 'Glass@Admin66'
 
 function sha256(content) {
   return crypto.createHash('sha256').update(content).digest('hex')

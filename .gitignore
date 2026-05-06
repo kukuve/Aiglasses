@@ -1,4 +1,15 @@
 SmartGlasses_MVP/.pio/
 SmartGlasses_MVP/.vscode/
+
+# Sensitive configuration files (contain credentials, ports, environment IDs,
+# and upload URLs — never commit real values)
+SmartGlasses_MVP/platformio.ini
+SmartGlasses_MVP/src/main.c
+SmartGlasses_MVP/sdkconfig.esp32cam
+
+# WeChat Mini Program project configs (contain AppID)
+User_UI/project.config.json
+admin/project.config.json
+
 *.mp4
 *.mov

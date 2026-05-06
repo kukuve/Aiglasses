@@ -2,6 +2,9 @@
 
 An end-to-end smart glasses solution that combines ESP32-CAM hardware with a WeChat mini program ecosystem. Users capture images through wearable camera hardware, which are uploaded to the cloud, analyzed by multi-provider AI vision models (DeepSeek, GPT-4 Vision, Gemini, Qwen, or custom), and returned as structured object recognition results with vocabulary words for language learning.
 
+> **⚠️ SECURITY NOTICE**  
+> This README contains placeholder values (e.g., `your-cloud-environment-id`, `your-wechat-app-id`, `your-auth-hash-secret-here`) throughout all configuration examples and code snippets. **Never commit real credentials, API keys, environment IDs, AppIDs, or passwords to version control.** Before deploying, replace every placeholder with your own private values. See [Section 10 (Configuration & Environment Variables)](#10-configuration--environment-variables) for a complete checklist. All sensitive defaults found in the original source code have been sanitized — if you previously cloned or forked this repository, rotate any credentials that may have been exposed.
+
 ---
 
 ## Table of Contents
@@ -122,7 +125,7 @@ The project consists of three main components:
 
 ## 4. Database Schema
 
-All collections reside in WeChat Cloud Base (environment: `cloud1-d9gof7sc438491e13`). Documents use auto-generated `_id` values unless otherwise noted.
+All collections reside in WeChat Cloud Base (environment: `your-cloud-environment-id`). Documents use auto-generated `_id` values unless otherwise noted.
 
 ### 4.1 `users` — User Accounts
 
@@ -303,7 +306,7 @@ English vocabulary words extracted from AI image analysis.
 
 ### WeChat Cloud Base Environment
 
-- **Environment ID**: `cloud1-d9gof7sc438491e13`
+- **Environment ID**: `your-cloud-environment-id`
 - **Database**: JSON document store with 10 collections (see Section 4)
 - **File Storage**: Stores uploaded JPEG images under `device-uploads/YYYYMMDD/<device_id>/` path
 - **Cloud Functions**: 6 deployed functions (see below)
@@ -337,7 +340,7 @@ The `uploadImage` cloud function supports calling the following AI vision APIs, 
 
 - **Hardware**: ESP32-CAM AI-Thinker module (with OV2640 or OV3660 camera), USB-to-Serial adapter
 - **Software**: [PlatformIO IDE](https://platformio.org/) (VS Code extension) or PlatformIO Core CLI, [WeChat Developer Tools](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
-- **Accounts**: WeChat Mini Program AppID (`wx918c33b8c2a93`), WeChat Cloud Base environment, AI provider API keys (DeepSeek, OpenAI, Google, or Alibaba)
+- **Accounts**: WeChat Mini Program AppID (replace `your-wechat-app-id` with your own registered AppID), WeChat Cloud Base environment, AI provider API keys (DeepSeek, OpenAI, Google, or Alibaba)
 
 ### 6.2 SmartGlasses_MVP (ESP32 Firmware)
 
@@ -349,23 +352,23 @@ The `uploadImage` cloud function supports calling the following AI vision APIs, 
    # Open in VS Code or PlatformIO IDE
    ```
 
-3. **Configure WiFi credentials** in `platformio.ini`:
+3. **Configure WiFi credentials** in `platformio.ini` (⚠️ never commit real credentials):
    ```ini
    build_flags =
        -DCONFIG_WIFI_SSID=\"YourWiFiSSID\"
        -DCONFIG_WIFI_PASSWORD=\"YourWiFiPassword\"
    ```
 
-4. **Set the upload URL** in `src/main.c` line 42:
+4. **Set the upload URL** in `src/main.c` line 42 (⚠️ never commit the real URL):
    ```c
-   #define UPLOAD_URL "https://cloud1-d9gof7sc438491e13.service.tcloudbase.com/uploadImage"
+   #define UPLOAD_URL "https://your-cloud-environment-id.service.tcloudbase.com/uploadImage"
    ```
-   Replace with the actual HTTP trigger URL from your deployed `uploadImage` cloud function.
+   Replace `your-cloud-environment-id` with your actual Cloud Base environment ID. Get the exact HTTP trigger URL from your deployed `uploadImage` cloud function.
 
-5. **Configure upload port** in `platformio.ini`:
+5. **Configure upload port** in `platformio.ini` (⚠️ never commit your real port):
    ```ini
-   upload_port = /dev/cu.wchusbserial14410   # macOS
-   monitor_port = /dev/cu.wchusbserial14410  # macOS
+   upload_port = /dev/cu.usbserial-XXXX      # macOS (replace with your port)
+   monitor_port = /dev/cu.usbserial-XXXX     # macOS (replace with your port)
    ```
    Adjust for your OS (e.g., `COM3` on Windows, `/dev/ttyUSB0` on Linux).
 
@@ -387,11 +390,11 @@ The `uploadImage` cloud function supports calling the following AI vision APIs, 
 
 2. **Import project**: Select the `User_UI/` directory.
 
-3. **Set AppID**: Use `wx918c33b8c2a93` or your own registered AppID.
+3. **Set AppID**: Use `your-wechat-app-id` or your own registered AppID.
 
 4. **Cloud environment** is already configured in `app.js`:
    ```javascript
-   env: 'cloud1-d9gof7sc438491e13'
+   env: 'your-cloud-environment-id'
    ```
 
 5. **Ensure cloud functions are deployed** (see Section 6.4) before testing.
@@ -650,7 +653,7 @@ The `uploadImage` cloud function supports calling the following AI vision APIs, 
 ### 9.6 Admin Access Control
 
 - Super admin functionality requires matching `SUPER_ADMIN_KEY` environment variable.
-- A default value is present in code (`Glass@Admin66`) but **must be overridden** in production via environment variable.
+- A default value is present in code (`your-super-admin-key-here`) but **must be overridden** in production via environment variable.
 - If `SUPER_ADMIN_KEY` is not configured, all sensitive queries are rejected.
 
 ---
@@ -663,8 +666,8 @@ Configured via `platformio.ini` build flags:
 
 | Variable | Default | Description |
 |---|---|---|
-| `CONFIG_WIFI_SSID` | `susu` | WiFi network name |
-| `CONFIG_WIFI_PASSWORD` | `suhuahua1998` | WiFi password |
+| `CONFIG_WIFI_SSID` | `YourWiFiSSID` | WiFi network name |
+| `CONFIG_WIFI_PASSWORD` | `YourWiFiPassword` | WiFi password |
 
 Configured via `#define` in `src/main.c`:
 
@@ -677,22 +680,26 @@ Configured via `#define` in `src/main.c`:
 
 ### 10.2 Cloud Functions (Environment Variables)
 
+> **🔒 CRITICAL: All default values shown below are PLACEHOLDERS for documentation only.** You MUST override every variable with your own strong, unique secrets before deploying to production. Never use the placeholder values in a live environment — they are not secrets and offer zero security.
+
 Set these in WeChat Cloud Base Console → Cloud Functions → Select function → Environment Variables:
 
 | Variable | Used By | Default | Description |
 |---|---|---|---|
-| `AUTH_HASH_SECRET` | `userAuth` | `AIGlass_Auth_Secret` | Secret key for password hashing and phone hashing |
-| `PASSWORD_ENCRYPT_SECRET` | `userAuth` | `<AUTH_HASH_SECRET>_Password_Encrypt` | AES-256-CBC encryption key for password storage |
-| `SUPER_ADMIN_KEY` | `userAuth` | `Glass@Admin66` | Admin key for sensitive data access (MUST override in production) |
+| `AUTH_HASH_SECRET` | `userAuth` | `your-auth-hash-secret-here` | Secret key for password hashing and phone hashing |
+| `PASSWORD_ENCRYPT_SECRET` | `userAuth` | `<your-auth-hash-secret-here>_Password_Encrypt` | AES-256-CBC encryption key for password storage |
+| `SUPER_ADMIN_KEY` | `userAuth` | `your-super-admin-key-here` | Admin key for sensitive data access (MUST override in production) |
 | `EXPOSE_VERIFY_CODE` | `userAuth` | `true` | Whether to expose verification codes in API responses (development only) |
 | `DEEPSEEK_API_KEY` | `uploadImage` | (none) | Default DeepSeek API key for AI vision (used when user hasn't configured their own) |
 
 ### 10.3 WeChat Cloud Environment
 
+> **📋 Note:** The Environment ID and AppID below are placeholders. Replace them with your own values obtained from the WeChat Mini Program admin console and Cloud Base console.
+
 | Parameter | Value |
 |---|---|
-| Environment ID | `cloud1-d9gof7sc438491e13` |
-| Mini Program AppID | `wx918c33b8c2a93` |
+| Environment ID | `your-cloud-environment-id` |
+| Mini Program AppID | `your-wechat-app-id` |
 
 ### 10.4 WeChat Developer Tools
 
@@ -769,7 +776,9 @@ For a complete fresh deployment, follow this order:
 
 ### 11.5 Production Hardening Checklist
 
-- [ ] Set strong, unique `SUPER_ADMIN_KEY` environment variable (never use default)
+> **⚠️ REMINDER:** All placeholder values in this README (e.g., `your-cloud-environment-id`, `your-wechat-app-id`, `your-auth-hash-secret-here`, `your-super-admin-key-here`, `YourWiFiSSID`, `YourWiFiPassword`) are for documentation only. Replace EVERY one of them with your own private values before deployment.
+
+- [ ] Set strong, unique `SUPER_ADMIN_KEY` environment variable (never use the placeholder `your-super-admin-key-here`)
 - [ ] Set strong, unique `AUTH_HASH_SECRET` environment variable
 - [ ] Set strong, unique `PASSWORD_ENCRYPT_SECRET` environment variable
 - [ ] Set `EXPOSE_VERIFY_CODE` to `false` (never expose verification codes in production)
@@ -779,6 +788,8 @@ For a complete fresh deployment, follow this order:
 - [ ] Set appropriate database permission rules in CloudBase console
 - [ ] Enable cloud function logging and monitoring
 - [ ] Back up database collections before major migrations
+- [ ] Ensure `SmartGlasses_MVP/platformio.ini` and `SmartGlasses_MVP/src/main.c` are in `.gitignore` or use environment-specific files to avoid committing WiFi passwords and upload URLs
+- [ ] Verify no real credentials, API keys, or environment IDs are present in any committed files before pushing to a public repository
 
 ---
 ---
@@ -786,6 +797,9 @@ For a complete fresh deployment, follow this order:
 # AiGlasses —— 智能AI眼镜系统（中文版）
 
 一套端到端的智能眼镜解决方案，将 ESP32-CAM 硬件与微信小程序生态相结合。用户通过可穿戴摄像头硬件拍摄照片，照片通过 HTTPS 上传至云端，由多供应商 AI 视觉模型（DeepSeek、GPT-4 Vision、Gemini、Qwen 或自定义模型）进行分析，返回结构化的物体识别结果以及用于语言学习的词汇单词。
+
+> **⚠️ 安全声明**  
+> 本 README 中所有配置示例和代码片段均使用占位符（如 `your-cloud-environment-id`、`your-wechat-app-id`、`your-auth-hash-secret-here`）。**切勿将真实凭证、API 密钥、环境 ID、AppID 或密码提交至版本控制系统。** 部署前，请将所有占位符替换为您自己的私有值。详见[第 10 节（配置与环境变量）](#10-配置与环境变量)中的完整检查清单。原始源代码中的所有敏感默认值已被清除——如果您之前克隆或复刻过此仓库，请轮换所有可能已泄露的凭证。
 
 ---
 
@@ -907,7 +921,7 @@ AiGlasses 是一套为智能眼镜设计的完整 IoT + 云 + 移动端系统。
 
 ## 4. 数据库模式
 
-所有集合均位于微信云开发环境中（环境 ID：`cloud1-d9gof7sc438491e13`）。文档使用自动生成的 `_id` 值，除非另有说明。
+所有集合均位于微信云开发环境中（环境 ID：`your-cloud-environment-id`）。文档使用自动生成的 `_id` 值，除非另有说明。
 
 ### 4.1 `users` — 用户账户
 
@@ -1088,7 +1102,7 @@ AiGlasses 是一套为智能眼镜设计的完整 IoT + 云 + 移动端系统。
 
 ### 微信云开发环境
 
-- **环境 ID**：`cloud1-d9gof7sc438491e13`
+- **环境 ID**：`your-cloud-environment-id`
 - **数据库**：JSON 文档存储，含 10 个集合（见第 4 节）
 - **文件存储**：将上传的 JPEG 图片存储在 `device-uploads/YYYYMMDD/<device_id>/` 路径下
 - **云函数**：已部署 6 个函数（见下文）
@@ -1122,7 +1136,7 @@ AiGlasses 是一套为智能眼镜设计的完整 IoT + 云 + 移动端系统。
 
 - **硬件**：ESP32-CAM AI-Thinker 模块（含 OV2640 或 OV3660 摄像头）、USB 转串口适配器
 - **软件**：[PlatformIO IDE](https://platformio.org/)（VS Code 扩展）或 PlatformIO Core CLI、[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
-- **账号**：微信小程序 AppID（`wx918c33b8c2a93`）、微信云开发环境、AI 供应商 API 密钥（DeepSeek、OpenAI、Google 或阿里云）
+- **账号**：微信小程序 AppID（请将 `your-wechat-app-id` 替换为您自己注册的 AppID）、微信云开发环境、AI 供应商 API 密钥（DeepSeek、OpenAI、Google 或阿里云）
 
 ### 6.2 SmartGlasses_MVP（ESP32 固件）
 
@@ -1134,23 +1148,23 @@ AiGlasses 是一套为智能眼镜设计的完整 IoT + 云 + 移动端系统。
    # 在 VS Code 或 PlatformIO IDE 中打开
    ```
 
-3. **在 `platformio.ini` 中配置 WiFi 凭据**：
+3. **在 `platformio.ini` 中配置 WiFi 凭据**（⚠️ 切勿提交真实凭据）：
    ```ini
    build_flags =
        -DCONFIG_WIFI_SSID=\"你的WiFi名称\"
        -DCONFIG_WIFI_PASSWORD=\"你的WiFi密码\"
    ```
 
-4. **在 `src/main.c` 第 42 行设置上传 URL**：
+4. **在 `src/main.c` 第 42 行设置上传 URL**（⚠️ 切勿提交真实 URL）：
    ```c
-   #define UPLOAD_URL "https://cloud1-d9gof7sc438491e13.service.tcloudbase.com/uploadImage"
+   #define UPLOAD_URL "https://your-cloud-environment-id.service.tcloudbase.com/uploadImage"
    ```
-   请替换为已部署的 `uploadImage` 云函数的实际 HTTP 触发器地址。
+   将 `your-cloud-environment-id` 替换为您的实际云开发环境 ID。从已部署的 `uploadImage` 云函数获取准确的 HTTP 触发器地址。
 
-5. **在 `platformio.ini` 中配置上传端口**：
+5. **在 `platformio.ini` 中配置上传端口**（⚠️ 切勿提交真实端口路径）：
    ```ini
-   upload_port = /dev/cu.wchusbserial14410   # macOS
-   monitor_port = /dev/cu.wchusbserial14410  # macOS
+   upload_port = /dev/cu.usbserial-XXXX      # macOS (replace with your port)
+   monitor_port = /dev/cu.usbserial-XXXX     # macOS (replace with your port)
    ```
    根据操作系统调整（如 Windows 上为 `COM3`，Linux 上为 `/dev/ttyUSB0`）。
 
@@ -1172,11 +1186,11 @@ AiGlasses 是一套为智能眼镜设计的完整 IoT + 云 + 移动端系统。
 
 2. **导入项目**：选择 `User_UI/` 目录。
 
-3. **设置 AppID**：使用 `wx918c33b8c2a93` 或您自己注册的 AppID。
+3. **设置 AppID**：使用 `your-wechat-app-id` 或您自己注册的 AppID。
 
 4. **云环境**已在 `app.js` 中配置：
    ```javascript
-   env: 'cloud1-d9gof7sc438491e13'
+   env: 'your-cloud-environment-id'
    ```
 
 5. **在测试前确保云函数已部署**（见 6.4 节）。
@@ -1435,7 +1449,7 @@ AiGlasses 是一套为智能眼镜设计的完整 IoT + 云 + 移动端系统。
 ### 9.6 管理员访问控制
 
 - 超级管理员功能需要匹配 `SUPER_ADMIN_KEY` 环境变量。
-- 代码中存在默认值（`Glass@Admin66`），但**必须在生产环境中通过环境变量覆盖**。
+- 代码中存在默认值（`your-super-admin-key-here`），但**必须在生产环境中通过环境变量覆盖**。
 - 如果未配置 `SUPER_ADMIN_KEY`，所有敏感查询将被拒绝。
 
 ---
@@ -1448,8 +1462,8 @@ AiGlasses 是一套为智能眼镜设计的完整 IoT + 云 + 移动端系统。
 
 | 变量 | 默认值 | 说明 |
 |---|---|---|
-| `CONFIG_WIFI_SSID` | `susu` | WiFi 网络名称 |
-| `CONFIG_WIFI_PASSWORD` | `suhuahua1998` | WiFi 密码 |
+| `CONFIG_WIFI_SSID` | `YourWiFiSSID` | WiFi 网络名称 |
+| `CONFIG_WIFI_PASSWORD` | `YourWiFiPassword` | WiFi 密码 |
 
 通过 `src/main.c` 中的 `#define` 配置：
 
@@ -1462,22 +1476,26 @@ AiGlasses 是一套为智能眼镜设计的完整 IoT + 云 + 移动端系统。
 
 ### 10.2 云函数（环境变量）
 
+> **🔒 关键提示：以下所有默认值均为文档占位符。** 部署到生产环境前，必须将每个变量覆盖为您自己生成的强随机密钥。切勿在线上环境中使用占位符值——它们不是真正的密钥，不提供任何安全保护。
+
 在微信云开发控制台 → 云函数 → 选择函数 → 环境变量中设置：
 
 | 变量 | 使用者 | 默认值 | 说明 |
 |---|---|---|---|
-| `AUTH_HASH_SECRET` | `userAuth` | `AIGlass_Auth_Secret` | 密码哈希和手机号哈希的密钥 |
-| `PASSWORD_ENCRYPT_SECRET` | `userAuth` | `<AUTH_HASH_SECRET>_Password_Encrypt` | 密码存储 AES-256-CBC 加密密钥 |
-| `SUPER_ADMIN_KEY` | `userAuth` | `Glass@Admin66` | 敏感数据访问管理员密钥（生产环境必须覆盖） |
+| `AUTH_HASH_SECRET` | `userAuth` | `your-auth-hash-secret-here` | 密码哈希和手机号哈希的密钥 |
+| `PASSWORD_ENCRYPT_SECRET` | `userAuth` | `<your-auth-hash-secret-here>_Password_Encrypt` | 密码存储 AES-256-CBC 加密密钥 |
+| `SUPER_ADMIN_KEY` | `userAuth` | `your-super-admin-key-here` | 敏感数据访问管理员密钥（生产环境必须覆盖） |
 | `EXPOSE_VERIFY_CODE` | `userAuth` | `true` | 是否在 API 响应中暴露验证码（仅开发环境） |
 | `DEEPSEEK_API_KEY` | `uploadImage` | （无） | 默认 DeepSeek API 密钥（用户未配置时使用） |
 
 ### 10.3 微信云环境
 
+> **📋 注意：** 以下环境 ID 和 AppID 为占位符。请替换为您在微信小程序管理后台和云开发控制台中获取的实际值。
+
 | 参数 | 值 |
 |---|---|
-| 环境 ID | `cloud1-d9gof7sc438491e13` |
-| 小程序 AppID | `wx918c33b8c2a93` |
+| 环境 ID | `your-cloud-environment-id` |
+| 小程序 AppID | `your-wechat-app-id` |
 
 ### 10.4 微信开发者工具
 
@@ -1554,7 +1572,9 @@ AiGlasses 是一套为智能眼镜设计的完整 IoT + 云 + 移动端系统。
 
 ### 11.5 生产环境加固清单
 
-- [ ] 设置强且唯一的 `SUPER_ADMIN_KEY` 环境变量（切勿使用默认值）
+> **⚠️ 提醒：** 本 README 中的所有占位符值（如 `your-cloud-environment-id`、`your-wechat-app-id`、`your-auth-hash-secret-here`、`your-super-admin-key-here`、`YourWiFiSSID`、`YourWiFiPassword`）仅供文档使用。部署前请将每一个占位符替换为您自己的私有值。
+
+- [ ] 设置强且唯一的 `SUPER_ADMIN_KEY` 环境变量（切勿使用占位符 `your-super-admin-key-here`）
 - [ ] 设置强且唯一的 `AUTH_HASH_SECRET` 环境变量
 - [ ] 设置强且唯一的 `PASSWORD_ENCRYPT_SECRET` 环境变量
 - [ ] 将 `EXPOSE_VERIFY_CODE` 设为 `false`（生产环境绝不暴露验证码）
@@ -1564,3 +1584,5 @@ AiGlasses 是一套为智能眼镜设计的完整 IoT + 云 + 移动端系统。
 - [ ] 在云开发控制台设置适当的数据库权限规则
 - [ ] 启用云函数日志和监控
 - [ ] 重大迁移前备份数据库集合
+- [ ] 确保 `SmartGlasses_MVP/platformio.ini` 和 `SmartGlasses_MVP/src/main.c` 列入 `.gitignore` 或使用环境特定文件，避免提交 WiFi 密码和上传 URL
+- [ ] 在推送至公开仓库前，确认所有已提交文件中不存在真实凭证、API 密钥或环境 ID

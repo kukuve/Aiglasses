@@ -39,7 +39,10 @@
 #define WIFI_SSID       CONFIG_WIFI_SSID
 #define WIFI_PASS       CONFIG_WIFI_PASSWORD
 
-#define UPLOAD_URL      "https://cloud1-d9gof7sc438491e13.service.tcloudbase.com/uploadImage"
+/* ⚠️  NEVER commit the real upload URL. Set it via
+ *     -DCONFIG_UPLOAD_URL in platformio.ini build_flags,
+ *     or an environment variable. */
+#define UPLOAD_URL      CONFIG_UPLOAD_URL
 #define MAX_RETRY       3
 #define HTTP_TIMEOUT_MS 35000
 #define HTTP_CAPTURE_PORT 80
