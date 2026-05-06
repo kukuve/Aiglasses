@@ -6,7 +6,22 @@ An end-to-end smart glasses solution that combines ESP32-CAM hardware with a WeC
 > This README contains placeholder values (e.g., `your-cloud-environment-id`, `your-wechat-app-id`, `your-auth-hash-secret-here`) throughout all configuration examples and code snippets. **Never commit real credentials, API keys, environment IDs, AppIDs, or passwords to version control.** Before deploying, replace every placeholder with your own private values. See [Section 10 (Configuration & Environment Variables)](#10-configuration--environment-variables) for a complete checklist. All sensitive defaults found in the original source code have been sanitized — if you previously cloned or forked this repository, rotate any credentials that may have been exposed.
 
 ---
+The following is the Project Display
+---
 
+
+<p align="center">
+<img width="3024" height="4032" alt="IMG_0006" src="https://github.com/user-attachments/assets/e87234bc-378d-4663-a221-b829e114909a" />
+<img width="1170" height="1690" alt="IMG_9999" src="https://github.com/user-attachments/assets/3a4978b5-8568-4cbf-a346-cd57c53c0805" />
+<img width="1170" height="1409" alt="IMG_0002" src="https://github.com/user-attachments/assets/ed9866ca-dbb1-4677-8255-a3ff1f9c27d9" />
+<img width="1168" height="1756" alt="IMG_0003" src="https://github.com/user-attachments/assets/15c66b22-362b-4825-b8fd-8b68a58c259f" />
+<img width="1170" height="1680" alt="IMG_9996" src="https://github.com/user-attachments/assets/a8417bcb-fe79-4f69-99c2-74036cf7608d" />
+<img width="1170" height="1578" alt="IMG_9997" src="https://github.com/user-attachments/assets/76caec94-08f4-4c40-9803-fee244bc0c62" />
+<img width="1170" height="1687" alt="IMG_9998" src="https://github.com/user-attachments/assets/6e7ffc8b-af93-4717-bd27-fb4d17b88fce" />
+
+
+
+</p>
 ## Table of Contents
 
 1. [Project Overview](#1-project-overview)
